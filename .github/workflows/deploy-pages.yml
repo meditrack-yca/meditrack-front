@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Le chemin vers le dossier de build généré par Angular (ex: dist/ ou dist/browser)
-          path: 'dist/' 
+          path: 'dist/meditrack-front' 
 
       - name: Déploiement sur GitHub Pages
         uses: actions/deploy-pages@v4
