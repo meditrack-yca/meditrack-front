@@ -41,7 +41,7 @@ jobs:
         run: npm run build -- --base-href=/meditrack-front/
 
       - name: Upload de l'artefact Pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           # Le chemin vers le dossier de build généré par Angular
           path: 'dist/meditrack-front/browser' 
