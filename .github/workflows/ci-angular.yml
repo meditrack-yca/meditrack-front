@@ -2,76 +2,19 @@ name: CI Angular
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  # 1. Étape de Lint (S'exécute en parallèle des tests)
-  lint:
-    name: Lint Code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout du code
-        uses: actions/checkout@v4
-
-      - name: Configuration de Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-          cache: 'npm'
-
-      - name: Installation propre des dépendances
-        run: npm ci
-
-      - name: Vérification du Lint
-        run: npm run lint
-
-  # 2. Étape de Tests (S'exécute en parallèle du lint)
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout du code
-        uses: actions/checkout@v4
-
-      - name: Configuration de Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-          cache: 'npm'
-
-      - name: Installation propre des dépendances
-        run: npm ci
-
-      - name: Exécution des tests (Chrome Headless)
-        run: npm run test:ci
-
-  # 3. Étape de Build (Attend que Lint ET Test soient au vert)
-  build:
-    name: Build & Artifact
-    needs: [lint, test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout du code
-        uses: actions/checkout@v4
-
-      - name: Configuration de Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-          cache: 'npm'
-
-      - name: Installation propre des dépendances
-        run: npm ci
-
-      - name: Compilation production
-        run: npm run build
-
-      - name: Upload de l'artefact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist-front
-          path: dist/
+  call-shared-ci:
+    uses: meditrack-yca/meditrack-actions.github/workflows/shared.yml@main
+    with:
+      node-version: '22.x'
+      test-command: 'npm run test:ci'
+      run-build: true
+      build-command: 'npm run build'
+      artifact-name: 'dist-front'
+      artifact-path: 'dist/'
+      target-env: 'staging'
+    secrets: inherit
