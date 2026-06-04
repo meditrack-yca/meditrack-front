@@ -20,7 +20,7 @@ concurrency:
 jobs:
   deploy-pages:
     name: Build & Deploy Angular
-    # Condition stricte demandée par le Palier 4
+    
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
