@@ -1,0 +1,52 @@
+name: Deploy Front to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  # Optionnel : permet de déclencher manuellement si besoin depuis l'interface
+  workflow_dispatch:
+
+# Permissions minimales requises pour pouvoir déployer sur GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Permet d'annuler les déploiements obsolètes en cours si un nouveau push arrive
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy-pages:
+    name: Build & Deploy Angular
+    # Condition stricte demandée par le Palier 4
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm' # On garde les bonnes pratiques d'optimisation
+
+      - name: Installation propre des dépendances
+        run: npm ci
+
+      - name: Compilation production Angular
+        run: npm run build -- --base-href=/mediTrack-front/
+        # ⚠️ Piège classique Angular : Remplace "/mediTrack-front/" par le nom exact 
+        # de ton dépôt GitHub Front pour éviter les erreurs 404 sur les fichiers JS/CSS.
+
+      - name: Upload de l'artefact Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Le chemin vers le dossier de build généré par Angular (ex: dist/ ou dist/browser)
+          path: 'dist/' 
+
+      - name: Déploiement sur GitHub Pages
+        uses: actions/deploy-pages@v4
