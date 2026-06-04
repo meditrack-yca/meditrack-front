@@ -38,14 +38,12 @@ jobs:
         run: npm ci
 
       - name: Compilation production Angular
-        run: npm run build -- --base-href=/mediTrack-front/
-        # ⚠️ Piège classique Angular : Remplace "/mediTrack-front/" par le nom exact 
-        # de ton dépôt GitHub Front pour éviter les erreurs 404 sur les fichiers JS/CSS.
+        run: npm run build -- --base-href=/meditrack-front/
 
       - name: Upload de l'artefact Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          # Le chemin vers le dossier de build généré par Angular (ex: dist/ ou dist/browser)
+          # Le chemin vers le dossier de build généré par Angular
           path: 'dist/meditrack-front' 
 
       - name: Déploiement sur GitHub Pages
