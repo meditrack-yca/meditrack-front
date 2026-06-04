@@ -47,4 +47,4 @@ jobs:
           path: 'dist/meditrack-front/browser' 
 
       - name: Déploiement sur GitHub Pages
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
