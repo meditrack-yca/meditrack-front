@@ -8,7 +8,7 @@ on:
 
 jobs:
   call-shared-ci:
-    uses: meditrack-yca/meditrack-actions/.github/workflows/shared.yml@main
+    uses: meditrack-yca/meditrack-actions/.github/workflows/ci-shared.yml@main
     with:
       node-version: '22.x'
       test-command: 'npm run test:ci'
